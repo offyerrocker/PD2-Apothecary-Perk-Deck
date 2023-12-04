@@ -29,9 +29,9 @@ Hooks:PreHook(DOTManager,"on_simulation_ended","apothecary_dotmanager_remove",fu
 end)
 
 Hooks:PostHook(DOTManager,"_add_doted_enemy","apothecary_add_doted_enemy",function(self,data)
-	local new_dot_data = Hooks:GetReturn()
-	if new_dot_data and data.gascloud_id then
-		new_dot_data.gascloud_id = data.gascloud_id
+	local dot_info,var_info,should_sync = Hooks:GetReturn()
+	if var_info and data.gascloud_id then
+		var_info.gascloud_id = data.gascloud_id
 	end
 end)
 
@@ -55,20 +55,22 @@ function DOTManager:_damage_dot(dot_info,var_info,...)
 			return false
 		end
 		
+		
 		--
+		local damage = var_info.dot_damage
 		local catalyzer_active = managers.player:get_property("apothecary_catalyzer_active")
 		
 		if catalyzer_active then
 			local add_dot_rampup = managers.player:upgrade_value("player","apothecary_activate_dot_rampup",0)
-			--local prev = dot_info.dot_damage_rampup or damage
-			if dot_info.dot_damage_rampup then
+			--local prev = var_info.dot_damage_rampup or damage
+			if var_info.dot_damage_rampup then
 				-- increment dot rampup
-				dot_info.dot_damage_rampup = dot_info.dot_damage_rampup + add_dot_rampup
+				var_info.dot_damage_rampup = var_info.dot_damage_rampup + add_dot_rampup
 			else
 				-- set to base dot damage + first additional dot rampup
-				dot_info.dot_damage_rampup = damage + add_dot_rampup
+				var_info.dot_damage_rampup = damage + add_dot_rampup
 			end
-			damage = dot_info.dot_damage_rampup
+			damage = var_info.dot_damage_rampup
 			--Console:SetTracker(string.format("damage %0.2f / %0.2f",prev,damage),6)
 		end
 		
@@ -93,7 +95,7 @@ function DOTManager:_damage_dot(dot_info,var_info,...)
 				end
 			end
 
-			local result = damage_class:give_damage_dot(col_ray, weapon_unit, attacker, var_info.dot_damage, var_info.hurt_animation, var_info.last_weapon_id, var_info.variant)
+			local result = damage_class:give_damage_dot(col_ray, weapon_unit, attacker, damage, var_info.hurt_animation, var_info.last_weapon_id, var_info.variant)
 			
 			if result and result ~= "friendly_fire" then
 				local is_dead = result.type == "death"
