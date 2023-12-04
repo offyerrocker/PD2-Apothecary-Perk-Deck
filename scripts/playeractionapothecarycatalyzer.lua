@@ -18,7 +18,7 @@ PlayerAction.ApothecaryCatalyzer = {
 		-- extend duration for each enemy in a cloud at the time of activation
 		if pm:has_category_upgrade("player","apothecary_activate_duration_increase") then
 			local duration_bonus = pm:upgrade_value("player","apothecary_activate_duration_increase",1)
-			for _,dot_info in pairs(managers.dot._doted_enemies) do 
+			for _,dot_info in pairs(managers.dot._doted_units) do 
 				if dot_info.gascloud_id then -- is from poison gas
 					duration = duration + duration_bonus
 				end

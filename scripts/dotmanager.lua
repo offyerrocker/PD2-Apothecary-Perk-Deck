@@ -2,7 +2,7 @@ local tmp_vec = Vector3()
 Hooks:PostHook(DOTManager,"init","apothecary_dotmanager_init",function(self)
 	Hooks:Add("catalyzer_nausea","dotmanager_" .. tostring(self),function()
 		-- on nausea event, inflict hurt_sick stun anim on all enemies who are afflicted with poison gas
-		for _,dot_info in pairs(self._doted_enemies) do
+		for _,dot_info in pairs(self._doted_units) do
 			if dot_info.gascloud_id then
 				local unit = dot_info.enemy_unit
 				local dmg_ext = alive(unit) and unit:character_damage()
