@@ -3,7 +3,7 @@
 	"description" : "Malfatto's Apothecary Perk Deck, master of poisons.",
 	"author" : "Offyerrocker",
 	"contact" : "Discord: Offyerrocker#3878",
-	"version" : "0.0.23",
+	"version" : "0.0.24",
 	"blt_version" : 2,
 	"priority" : 69,
 	"color" : "255 64 0",

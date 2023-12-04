@@ -1,7 +1,7 @@
 local tmp_vec = Vector3()
 Hooks:PostHook(DOTManager,"init","apothecary_dotmanager_init",function(self)
 	Hooks:Add("catalyzer_nausea","dotmanager_" .. tostring(self),function()
-		-- inflict nausea anim on all enemies who are afflicted with poison gas
+		-- on nausea event, inflict hurt_sick stun anim on all enemies who are afflicted with poison gas
 		for _,dot_info in pairs(self._doted_enemies) do
 			if dot_info.gascloud_id then
 				local unit = dot_info.enemy_unit
@@ -28,34 +28,36 @@ Hooks:PreHook(DOTManager,"on_simulation_ended","apothecary_dotmanager_remove",fu
 	Hooks:Remove("catalyzer_nausea")
 end)
 
-function DOTManager:add_doted_enemy_from_gas(gascloud_id,enemy_unit,...)
-	self:_add_doted_enemy(enemy_unit,...)
-	for _,dot_info in pairs(self._doted_enemies) do 
-		if dot_info.enemy_unit == enemy_unit then 
-			dot_info.gascloud_id = gascloud_id
-			break
-		end
+Hooks:PostHook(DOTManager,"_add_doted_enemy","apothecary_add_doted_enemy",function(self,data)
+	local new_dot_data = Hooks:GetReturn()
+	if new_dot_data and data.gascloud_id then
+		new_dot_data.gascloud_id = data.gascloud_id
 	end
-end
+end)
 
 local orig_damage_dot = DOTManager._damage_dot
-function DOTManager:_damage_dot(dot_info,...)
+function DOTManager:_damage_dot(dot_info,var_info,...)
 	if dot_info.gascloud_id then 
-		if not alive(dot_info.enemy_unit) then
-			return
+		
+		if not alive(dot_info.unit) then
+			return false
 		end
 		
-		local attacker_unit = managers.player:player_unit()
-		local col_ray = {
-			unit = dot_info.enemy_unit
-		}
-		local damage = dot_info.dot_damage
-		local ignite_character = false
-		local weapon_unit = dot_info.weapon_unit
-		local weapon_id = dot_info.weapon_id
-	
-		local catalyzer_active = managers.player:get_property("apothecary_catalyzer_active")
+		if not var_info.damage_class then
+			return false
+		end
+
+		if not var_info.can_deal_damage then
+			if var_info.apply_hurt_once then
+				var_info.hurt_animation = false
+			end
+
+			return false
+		end
+		
 		--
+		local catalyzer_active = managers.player:get_property("apothecary_catalyzer_active")
+		
 		if catalyzer_active then
 			local add_dot_rampup = managers.player:upgrade_value("player","apothecary_activate_dot_rampup",0)
 			--local prev = dot_info.dot_damage_rampup or damage
@@ -69,20 +71,43 @@ function DOTManager:_damage_dot(dot_info,...)
 			damage = dot_info.dot_damage_rampup
 			--Console:SetTracker(string.format("damage %0.2f / %0.2f",prev,damage),6)
 		end
-		--
 		
-		if dot_info.variant and dot_info.variant == "poison" then
+		local damage_class = CoreSerialize.string_to_classtable(var_info.damage_class)
+
+		if damage_class and damage_class.give_damage_dot then
 			
-			local result = PoisonBulletBase:give_damage_dot(col_ray, weapon_unit, attacker_unit, damage, dot_info.hurt_animation, weapon_id)
-			if result then 
-				local dmg_ext = dot_info.enemy_unit.character_damage and dot_info.enemy_unit:character_damage()
+			local col_ray = {
+				unit = dot_info.unit
+			}
+			local weapon_unit = var_info.last_weapon_unit
+			weapon_unit = alive(weapon_unit) and weapon_unit or nil
+			local attacker = var_info.last_attacker_unit
+			attacker = alive(attacker) and attacker or nil
+
+			if attacker then
+				local base_ext = attacker:base()
+
+				if base_ext and base_ext.thrower_unit then
+					attacker = base_ext:thrower_unit()
+					attacker = alive(attacker) and attacker or nil
+				end
+			end
+
+			local result = damage_class:give_damage_dot(col_ray, weapon_unit, attacker, var_info.dot_damage, var_info.hurt_animation, var_info.last_weapon_id, var_info.variant)
+			
+			if result and result ~= "friendly_fire" then
+				local is_dead = result.type == "death"
+				
+				local dmg_ext = col_ray.unit.character_damage and col_ray.unit:character_damage()
 				if dmg_ext then 
 					dmg_ext._apothecary_dot_last_t = TimerManager:game():time()
 				end
 				
-				local is_dead = result.type == "death"
-				if alive(weapon_unit) and weapon_unit:base() and weapon_unit:base().thrower_unit then
-					weapon_unit:base():_check_achievements(dot_info.enemy_unit, is_dead, result.damage_percent or 0, 1, is_dead and 1 or 0, dot_info.variant)
+				local base_ext = weapon_unit and weapon_unit:base()
+				
+				if base_ext and base_ext.thrower_unit and base_ext._check_achievements then
+
+					base_ext:_check_achievements(dot_info.unit, is_dead, result.damage_percent or 0, 1, is_dead and 1 or 0, var_info.variant)
 				end
 				
 				-- perform heal on kill
@@ -102,14 +127,20 @@ function DOTManager:_damage_dot(dot_info,...)
 						end
 					end
 				end
+				
+			end
+
+			if var_info.apply_hurt_once then
+				var_info.hurt_animation = false
 			end
 			
-			if dot_info.hurt_animation and dot_info.apply_hurt_once then
-				dot_info.hurt_animation = false
-			end
+		elseif damage_class then
+			Application:error("[DOTManager:_damage_dot] Class '" .. tostring(var_info.damage_class) .. "' lacks 'give_damage_dot' function.")
+		else
+			Application:error("[DOTManager:_damage_dot] No class found with '" .. tostring(var_info.damage_class) .. "'.")
 		end
-		
-		return
+
+		return not alive(dot_info.unit) or dot_info.unit:character_damage().dead and dot_info.unit:character_damage():dead()
 	end
-	return orig_damage_dot(self,dot_info,...)
+	return orig_damage_dot(self,dot_info,var_info,...)
 end
