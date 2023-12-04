@@ -1,0 +1,17 @@
+{
+	"menu_deck_apothecary_title" : "Apothecary",
+	"menu_deck_apothecary_desc" : "Fast, deadly, and nigh-unkillable, the Apothecary is adept at taking control of the battlefield, bombarding enemies with suffocating clouds of poisonous gas. Don't be fooled, though- they aren't hiding out of cowardice... you just can't see them coming.",
+	"menu_deck_apothecary_1" : "Biological Warfare",
+	"menu_deck_apothecary_1_desc" : "Unlocks the Catalyzer, replacing your throwable. Upon activating, all instances of damage dealt by poison gas ramp up over time, adding an additional ##2## damage per second for ##10## seconds. ##90## second cooldown. Every kill decreases the cooldown by ##1## second.",
+	"menu_deck_apothecary_3" : "Anticognizant",
+	"menu_deck_apothecary_3_desc" : "+##20## HP. Enemies suffering from gas damage are highlighted, and upon using Catalyzer, the poison release potent toxins into the brain, briefly causing confusion and intense migraines in those affected. Increase ramp up damage to an additional ##3## per second.",
+	"menu_deck_apothecary_5" : "Breathe Deep",
+	"menu_deck_apothecary_5_desc" : "+##20## HP. Catalyzer's initial duration increases by ##1## second for every enemy taking poison gas damage upon activation. While inside a gas cloud, you gain ##2%## damage resistance for every enemy killed via melee, capping at ##50%## for ##10## seconds. This timer pauses while standing in a cloud, and refreshes on melee kill. Increase ramp up damage to an additional ##4## per second.",
+	"menu_deck_apothecary_7" : "Toxic Relationship",
+	"menu_deck_apothecary_7_desc" : "While the Catalyzer is active, for every ##5## enemies killed by allies or poison gas damage, you and all allies restore ##5%## health. If the unit dies from an ally's melee attack, this amount increases to ##10%##. Increase ramp up damage to an additional ##5## per second.",
+	"menu_deck_apothecary_9" : "Coursing Through Your Veins",
+	"menu_deck_apothecary_9_desc" : "+##30## HP. Upon activating Catalyzer, all allies gain a ##30%## speed boost, with your own being refreshed by ##1## second on melee kill and doubles all healing from gas sources.\nKills now decrease the Catalyzer cooldown by ##2## seconds.\nYou deal ##50%## more damage to enemies who are afflicted by poison gas.\nOverexposure to these toxins has bolstered your body; you gain ##4%## damage reduction instead of ##2%##, and reload grenade launchers ##50%## quicker.",
+	"bm_menu_skill_locked_apothecary_catalyzer" : "Requires the Apothecary Perk Deck equipped",
+	"bm_grenade_apothecary_catalyzer" : "Catalyzer",
+	"bm_grenade_apothecary_catalyzer_desc" : "Originally a failed pesticide deemed \"too dangerous for human use,\" Gage decided one massive biolab's failure is one wheelchair-bound weapon dealer's treasure. With enticing side effects such as nausea, cell necrosis, and what Gage has come to lovingly call 'leg-lock', this potent toxin was loaded into grenades and given to the Payday gang for use. However, the pesticide wasn't the only thing tossed out, as the formula for a catalyzer was also made, in order to sell an enhancer later down the line for more profit. This vial, unassuming as it is, is that very catalyst. Once broken, it unleashes a slew of new effects upon those affected.\n\nWar crime? Sure. Effective? Absolutely. Seems it's good at killing a different kind of pest...\n\nIn Gage's own words: \"Bring a mask, and don't fucking drop it!\""
+}

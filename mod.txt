@@ -1,0 +1,65 @@
+{
+	"name" : "Apothecary Perk Deck",
+	"description" : "Malfatto's Apothecary Perk Deck, master of poisons.",
+	"author" : "Offyerrocker",
+	"contact" : "Discord: Offyerrocker#3878",
+	"version" : "0.0.23",
+	"blt_version" : 2,
+	"priority" : 69,
+	"color" : "255 64 0",
+	"image" : "icon.png",
+	"hooks"	:   [
+		{
+			"hook_id" : "lib/tweak_data/skilltreetweakdata",
+			"script_path" : "scripts/skilltreetweakdata.lua"
+		},
+		{
+			"hook_id" : "lib/tweak_data/upgradestweakdata",
+			"script_path" : "scripts/upgradestweakdata.lua"
+		},
+		{
+			"hook_id" : "lib/tweak_data/blackmarket/projectilestweakdata",
+			"script_path" : "scripts/projectilestweakdata.lua"
+		},
+		{
+			"hook_id" : "lib/tweak_data/hudiconstweakdata",
+			"script_path" : "scripts/hudiconstweakdata.lua"
+		},
+		{
+			"hook_id" : "lib/units/enemies/cop/copdamage",
+			"script_path" : "scripts/copdamage.lua"
+		},
+		{
+			"hook_id" : "lib/units/enemies/cop/huskcopdamage",
+			"script_path" : "scripts/copdamage.lua"
+		},
+		{
+			"hook_id" : "lib/player_actions/playeraction",
+			"script_path" : "scripts/playeractionapothecarycatalyzer.lua"
+		},
+		{
+			"hook_id" : "lib/managers/dotmanager",
+			"script_path" : "scripts/dotmanager.lua"
+		},
+		{
+			"hook_id" : "lib/units/contourext",
+			"script_path" : "scripts/contourext.lua"
+		},
+		{
+			"hook_id" : "lib/managers/player/poisongaseffect",
+			"script_path" : "scripts/poisongaseffect.lua"
+		},
+		{
+			"hook_id" : "lib/managers/playermanager",
+			"script_path" : "scripts/playermanager.lua"
+		},
+		{
+			"hook_id" : "lib/managers/playermanager",
+			"script_path" : "scripts/sync_fixes.lua"
+		},
+		{
+			"hook_id" : "lib/managers/localizationmanager",
+			"script_path" : "scripts/localizationmanager.lua"
+		}
+	]
+}
