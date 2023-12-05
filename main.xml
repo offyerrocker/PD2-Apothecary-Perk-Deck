@@ -1,6 +1,6 @@
 <mod name="Apothecary Perk Deck" author="Offyerrocker" color="Color(1,0.25,1)">
 	<!--
-	<AssetUpdates id="45276" version="0.0.24" provider="modworkshop" install_directory = "mods/" />
+	<AssetUpdates id="45276" version="0.0.25" provider="modworkshop" install_directory = "mods/" />
 	-->
 	<Localization directory="localization" default="english.json">
 		<loc file="english.json" language="english" />

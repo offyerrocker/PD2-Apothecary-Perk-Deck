@@ -30,8 +30,8 @@ end)
 
 Hooks:PostHook(DOTManager,"_add_doted_enemy","apothecary_add_doted_enemy",function(self,data)
 	local dot_info,var_info,should_sync = Hooks:GetReturn()
-	if var_info and data.gascloud_id then
-		var_info.gascloud_id = data.gascloud_id
+	if dot_info and data.gascloud_id then
+		dot_info.gascloud_id = data.gascloud_id
 	end
 end)
 
