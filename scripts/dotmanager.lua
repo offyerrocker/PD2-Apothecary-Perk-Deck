@@ -4,7 +4,7 @@ Hooks:PostHook(DOTManager,"init","apothecary_dotmanager_init",function(self)
 		-- on nausea event, inflict hurt_sick stun anim on all enemies who are afflicted with poison gas
 		for _,dot_info in pairs(self._doted_units) do
 			if dot_info.gascloud_id then
-				local unit = dot_info.enemy_unit
+				local unit = dot_info.unit
 				local dmg_ext = alive(unit) and unit:character_damage()
 				if dmg_ext then
 					local hurt_data = {
